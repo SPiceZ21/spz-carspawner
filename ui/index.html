@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPiceZ Car Spawner</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app" style="display: none;">
+        <div class="spawner-container">
+            <div class="spawner-header">
+                <div class="header-left">
+                    <img src="public/logo.png" alt="SPiceZ Logo" class="logo-small">
+                    <div class="header-main">
+                        <span class="header-label">VEHICLE DEPOT</span>
+                        <h1>SELECT YOUR MACHINE</h1>
+                    </div>
+                </div>
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="SEARCH DEPOT..." oninput="filterVehicles()">
+                </div>
+            </div>
+
+            <div class="vehicle-grid" id="vehicle-list">
+                <!-- Vehicles will be populated here -->
+            </div>
+
+            <div class="spawner-footer">
+                <span class="footer-hint">ESC TO CLOSE • CLICK TO DEPLOY</span>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

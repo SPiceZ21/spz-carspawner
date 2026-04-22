@@ -1,0 +1,210 @@
+@font-face {
+    font-family: 'Panchang';
+    src: url('public/fonts/Panchang-Regular.ttf') format('truetype');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'Panchang';
+    src: url('public/fonts/Panchang-Bold.ttf') format('truetype');
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: 'Panchang';
+    src: url('public/fonts/Panchang-Extrabold.ttf') format('truetype');
+    font-weight: 800;
+}
+
+@font-face {
+    font-family: 'Panchang';
+    src: url('public/fonts/Panchang-Light.ttf') format('truetype');
+    font-weight: 300;
+}
+
+:root {
+    --accent: #FF6200;
+    --accent-secondary: #FF9F63;
+    --accent-glow: rgba(255, 98, 0, 0.4);
+    --bg-dark: #000000;
+    --bg-glass: rgba(0, 0, 0, 0.95);
+    --text-white: #FFFFFF;
+    --text-dim: rgba(255, 255, 255, 0.5);
+    --font-family: 'Panchang', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    background: transparent;
+    font-family: var(--font-family);
+    color: var(--text-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#app {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.6);
+    animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.spawner-container {
+    width: 70vw;
+    height: 75vh;
+    background: var(--bg-glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-top: 5px solid var(--accent);
+    display: flex;
+    flex-direction: column;
+    padding: 3.5rem;
+    position: relative;
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.9);
+}
+
+.spawner-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 3.5rem;
+}
+
+.header-label {
+    font-size: 0.75rem;
+    font-weight: 300; /* Light */
+    letter-spacing: 0.5rem;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+    display: block;
+}
+
+h1 {
+    font-size: 2.8rem;
+    font-weight: 800; /* Extrabold */
+    text-transform: uppercase;
+    line-height: 1;
+}
+
+.logo-small {
+    height: 45px;
+    margin-bottom: 1.5rem;
+}
+
+.search-container input {
+    background: rgba(255, 255, 255, 0.03);
+    border: none;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 1rem 1.5rem;
+    width: 300px;
+    font-family: var(--font-family);
+    font-size: 0.9rem;
+    outline: none;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+}
+
+.search-container input:focus {
+    border-color: var(--accent);
+    background: rgba(255, 255, 255, 0.06);
+    box-shadow: 0 5px 15px rgba(255, 98, 0, 0.1);
+}
+
+.vehicle-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.5rem;
+    overflow-y: auto;
+    padding-right: 1.5rem;
+}
+
+/* Scrollbar */
+.vehicle-grid::-webkit-scrollbar {
+    width: 3px;
+}
+.vehicle-grid::-webkit-scrollbar-thumb {
+    background: var(--accent);
+}
+.vehicle-grid::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.vehicle-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.vehicle-card:hover {
+    background: rgba(255, 98, 0, 0.04);
+    border-color: var(--accent);
+    transform: translateY(-8px);
+}
+
+.card-label {
+    font-size: 1.2rem;
+    font-weight: 700; /* Bold */
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
+}
+
+.card-model {
+    font-size: 0.7rem;
+    font-weight: 300; /* Light */
+    color: var(--text-dim);
+    letter-spacing: 0.2rem;
+}
+
+.card-accent {
+    width: 0;
+    height: 3px;
+    background: var(--accent);
+    transition: width 0.4s ease;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.vehicle-card:hover .card-accent {
+    width: 100%;
+}
+
+.spawner-footer {
+    margin-top: 2.5rem;
+    text-align: center;
+}
+
+.footer-hint {
+    font-size: 0.7rem;
+    font-weight: 300;
+    color: var(--text-dim);
+    letter-spacing: 0.3rem;
+    text-transform: uppercase;
+}
