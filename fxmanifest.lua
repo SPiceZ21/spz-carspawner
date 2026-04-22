@@ -20,7 +20,11 @@ files {
     'ui/index.html',
     'ui/style.css',
     'ui/script.js',
-    -- Inherit branding from spz-spawn if needed, or just keep it simple
+    'ui/public/logo.png',
+    'ui/public/fonts/Panchang-Regular.ttf',
+    'ui/public/fonts/Panchang-Bold.ttf',
+    'ui/public/fonts/Panchang-Extrabold.ttf',
+    'ui/public/fonts/Panchang-Light.ttf',
 }
 
 dependencies {
