@@ -25,8 +25,8 @@
 :root {
     --accent: #FF6200;
     --accent-glow: rgba(255, 98, 0, 0.4);
-    --bg-dark: rgba(10, 10, 15, 0.95);
-    --bg-glass: rgba(15, 15, 20, 0.85);
+    --bg-dark: rgba(10, 10, 15, 0.6);
+    --bg-glass: rgba(15, 15, 20, 0.45);
     --text-white: #FFFFFF;
     --text-dim: rgba(255, 255, 255, 0.4);
     --font-main: 'Outfit', sans-serif;
@@ -58,7 +58,7 @@ body {
     height: 100%;
     display: flex;
     align-items: center;
-    background: radial-gradient(circle at 10% 50%, rgba(0, 0, 0, 0.4) 0%, transparent 70%);
+    background: radial-gradient(circle at 10% 50%, rgba(0, 0, 0, 0.2) 0%, transparent 80%);
     animation: fadeIn 0.3s ease;
 }
 
@@ -71,7 +71,7 @@ body {
     width: 380px; /* Compact width */
     height: 80vh;
     background: var(--bg-glass);
-    backdrop-filter: blur(25px);
+    backdrop-filter: blur(40px);
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-left: 4px solid var(--accent);
     display: flex;
