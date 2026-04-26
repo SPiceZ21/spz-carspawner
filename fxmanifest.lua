@@ -18,13 +18,8 @@ server_scripts {
 
 files {
     'ui/index.html',
-    'ui/style.css',
-    'ui/script.js',
     'ui/public/logo.png',
-    'ui/public/fonts/Panchang-Regular.ttf',
-    'ui/public/fonts/Panchang-Bold.ttf',
-    'ui/public/fonts/Panchang-Extrabold.ttf',
-    'ui/public/fonts/Panchang-Light.ttf',
+    'ui/public/fonts/*.ttf',
 }
 
 dependencies {
