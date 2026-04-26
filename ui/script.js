@@ -31,6 +31,7 @@ function renderVehicles(list) {
 
         container.appendChild(card);
     });
+  if (window.lucide) lucide.createIcons();
 }
 
 function filterVehicles() {

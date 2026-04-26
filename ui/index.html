@@ -1,37 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPiceZ Car Spawner</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SPZ · Vehicle Depot</title>
+<link rel="stylesheet" href="../../spz-ui/components/styles/spz-ui.css">
+<style>
+  html, body { width: 100vw; height: 100vh; overflow: hidden; background: transparent; }
+  .overlay { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; }
+</style>
 </head>
 <body>
-    <div id="app" style="display: none;">
-        <div class="spawner-container">
-            <div class="spawner-header">
-                <div class="header-left">
-                    <img src="public/logo.png" alt="SPiceZ Logo" class="logo-small">
-                    <div class="header-main">
-                        <span class="header-label">VEHICLE DEPOT</span>
-                        <h1>SELECT YOUR MACHINE</h1>
-                    </div>
-                </div>
-                <div class="search-container">
-                    <input type="text" id="search-input" placeholder="SEARCH DEPOT..." oninput="filterVehicles()">
-                </div>
-            </div>
+<div id="root"></div>
 
-            <div class="vehicle-grid" id="vehicle-list">
-                <!-- Vehicles will be populated here -->
-            </div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
 
-            <div class="spawner-footer">
-                <span class="footer-hint">ESC TO CLOSE • CLICK TO DEPLOY</span>
-            </div>
-        </div>
+<script type="text/babel" src="../../spz-ui/components/Icon.jsx"></script>
+<script type="text/babel" src="../../spz-ui/components/Badge.jsx"></script>
+<script type="text/babel" src="../../spz-ui/components/Input.jsx"></script>
+<script type="text/babel" src="../../spz-ui/components/Kbd.jsx"></script>
+
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+function VehicleRow({ vehicle, onSpawn }) {
+  const [hover, setHover] = useState(false);
+  return (
+    <div
+      onClick={() => onSpawn(vehicle.model)}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: '9px 10px', borderRadius: 4, cursor: 'pointer', marginBottom: 2,
+        background: hover ? 'var(--spz-surface-2)' : 'transparent',
+        transition: 'background 80ms',
+      }}
+    >
+      <div>
+        <div style={{ color: 'var(--spz-fg-1)', fontWeight: 500, fontSize: 13 }}>{vehicle.label}</div>
+        <div className="spz-mono" style={{ color: 'var(--spz-fg-3)', fontSize: 11 }}>{vehicle.model.toUpperCase()}</div>
+      </div>
+      <Icon name="chevron-right" size={14} style={{ color: 'var(--spz-fg-3)' }} />
     </div>
-    <script src="script.js"></script>
+  );
+}
+
+function App() {
+  const [visible, setVisible] = useState(false);
+  const [vehicles, setVehicles] = useState([]);
+  const [query, setQuery] = useState('');
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.data.type === 'show') {
+        setVehicles(e.data.vehicles || []);
+        setQuery('');
+        setVisible(true);
+      } else if (e.data.type === 'hide') {
+        setVisible(false);
+      }
+    };
+    window.addEventListener('message', handler);
+    return () => window.removeEventListener('message', handler);
+  }, []);
+
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape' && visible) doClose(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [visible]);
+
+  useEffect(() => { if (window.lucide) window.lucide.createIcons(); });
+
+  const doClose = () => {
+    fetch(`https://${GetParentResourceName()}/close`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}',
+    }).catch(() => {});
+    setVisible(false);
+  };
+
+  const spawn = (model) => {
+    fetch(`https://${GetParentResourceName()}/spawnVehicle`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ model }),
+    }).catch(() => {});
+    setVisible(false);
+  };
+
+  const filtered = vehicles.filter(v =>
+    v.label.toLowerCase().includes(query.toLowerCase()) ||
+    v.model.toLowerCase().includes(query.toLowerCase())
+  );
+
+  if (!visible) return null;
+
+  return (
+    <div className="overlay">
+      <div style={{
+        width: 320, display: 'flex', flexDirection: 'column', maxHeight: '78vh',
+        border: '1px solid var(--spz-line)', borderRadius: 'var(--spz-radius-4)',
+        background: 'var(--spz-surface-1)', boxShadow: 'var(--spz-shadow-3)', overflow: 'hidden',
+      }}>
+        <div style={{ padding: '16px 16px 12px', borderBottom: '1px solid var(--spz-line)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+            <span style={{ color: 'var(--spz-orange)', display: 'flex' }}><Icon name="car-front" size={18} /></span>
+            <div>
+              <div className="spz-eyebrow">Vehicle Depot</div>
+              <div style={{ fontFamily: 'var(--spz-font-display)', fontWeight: 600, fontSize: 16, color: 'var(--spz-fg-1)', textTransform: 'uppercase', letterSpacing: '0.02em' }}>Select Machine</div>
+            </div>
+          </div>
+          <div style={{ position: 'relative' }}>
+            <span style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: 'var(--spz-fg-3)', display: 'flex', pointerEvents: 'none' }}>
+              <Icon name="search" size={13} />
+            </span>
+            <Input style={{ paddingLeft: 30 }} placeholder="Search vehicles…" value={query} onChange={e => setQuery(e.target.value)} autoFocus />
+          </div>
+        </div>
+
+        <div style={{ flex: 1, overflowY: 'auto', padding: '6px 8px' }}>
+          {filtered.length === 0 && (
+            <div style={{ padding: '28px 0', textAlign: 'center', color: 'var(--spz-fg-3)', fontSize: 12 }}>No vehicles found</div>
+          )}
+          {filtered.map(v => <VehicleRow key={v.model} vehicle={v} onSpawn={spawn} />)}
+        </div>
+
+        <div style={{ padding: '10px 14px', borderTop: '1px solid var(--spz-line)', display: 'flex', gap: 8, alignItems: 'center' }}>
+          <Kbd>Esc</Kbd><span style={{ fontSize: 11, color: 'var(--spz-fg-3)' }}>close</span>
+          <span style={{ color: 'var(--spz-fg-4)', fontSize: 11 }}>·</span>
+          <Kbd>Click</Kbd><span style={{ fontSize: 11, color: 'var(--spz-fg-3)' }}>deploy</span>
+          <div style={{ marginLeft: 'auto' }}><Badge variant="orange">{filtered.length} vehicles</Badge></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
 </body>
 </html>
