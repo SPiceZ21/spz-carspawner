@@ -1,4 +1,4 @@
-fx_version 'cerulean'
+﻿fx_version 'cerulean'
 game 'gta5'
 
 name 'spz-carspawner'
@@ -24,3 +24,4 @@ dependencies {
     'spz-lib',
     'spz-vehicles'
 }
+
