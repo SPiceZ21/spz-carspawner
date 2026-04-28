@@ -1,0 +1,119 @@
+/* Carspawner layout — pointer-events re-enabled for the panel */
+.depot-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.depot-panel {
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  max-height: 78vh;
+  border: 1px solid var(--gray-800);
+  border-radius: 8px;
+  background: var(--gray-900);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  pointer-events: auto;
+  animation: spz-in 200ms var(--anim-ease);
+}
+
+.depot-header {
+  padding: 16px 16px 12px;
+  border-bottom: 1px solid var(--gray-800);
+  flex-shrink: 0;
+}
+
+.depot-header-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.depot-icon {
+  color: var(--color-primary);
+  display: flex;
+}
+
+.depot-title {
+  font-family: var(--font-primary);
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--gray-50);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.depot-search-wrap {
+  position: relative;
+}
+
+.depot-search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gray-400);
+  display: flex;
+  pointer-events: none;
+}
+
+.depot-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 6px 8px;
+}
+
+.depot-empty {
+  padding: 28px 0;
+  text-align: center;
+  color: var(--gray-500);
+  font-size: 12px;
+}
+
+.vehicle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 2px;
+  background: transparent;
+  transition: background 80ms;
+}
+
+.vehicle-row:hover {
+  background: var(--gray-800);
+}
+
+.vehicle-name {
+  color: var(--gray-50);
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.vehicle-model {
+  font-family: var(--font-mono);
+  color: var(--gray-500);
+  font-size: 11px;
+}
+
+.depot-footer {
+  padding: 10px 14px;
+  border-top: 1px solid var(--gray-800);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.depot-footer-sep {
+  color: var(--gray-700);
+  font-size: 11px;
+}

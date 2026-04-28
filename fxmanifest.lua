@@ -3,10 +3,10 @@ game 'gta5'
 
 name 'spz-carspawner'
 description 'Standalone Car Spawner with NUI'
-version '1.0.0'
+version '1.0.9'
 author 'SPiceZ-Core'
 
-ui_page 'ui/index.html'
+ui_page 'ui/dist/index.html'
 
 client_scripts {
     'client/main.lua'
@@ -17,9 +17,7 @@ server_scripts {
 }
 
 files {
-    'ui/index.html',
-    'ui/public/logo.png',
-    'ui/public/fonts/*.ttf',
+    'ui/dist/**/*',
 }
 
 dependencies {
