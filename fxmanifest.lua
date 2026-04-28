@@ -3,7 +3,7 @@ game 'gta5'
 
 name 'spz-carspawner'
 description 'Standalone Car Spawner with NUI'
-version '1.0.9'
+version '1.0.10'
 author 'SPiceZ-Core'
 
 ui_page 'ui/dist/index.html'
