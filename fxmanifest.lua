@@ -24,4 +24,3 @@ dependencies {
     'spz-lib',
     'spz-vehicles'
 }
-
