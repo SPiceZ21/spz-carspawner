@@ -2,6 +2,8 @@
 
 local isOpen = false
 
+RegisterKeyMapping("car", "Open Car Spawner", "keyboard", "F5")
+
 RegisterNetEvent("SPZ:carspawner:openMenu", function()
     if isOpen then return end
     
