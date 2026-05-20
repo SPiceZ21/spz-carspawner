@@ -24,11 +24,6 @@
   },
   "include": [
     "src"
-  ],
-  "references": [
-    {
-      "path": "../../spz-ui"
-    }
   ]
 }
 
