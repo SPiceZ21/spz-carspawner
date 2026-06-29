@@ -57,7 +57,7 @@ RegisterCommand("car", function(source, args)
         if exports["spz-vehicles"]:IsRegistered(model) then
             exports["spz-vehicles"]:SpawnVehicle(source, model, "freeroam")
         else
-            TriggerClientEvent("spz-lib:Notify", source, "Invalid model: " .. model, "error")
+            TriggerClientEvent('ox_lib:notify', source, { description = "Invalid model: " .. model, type = "error" })
         end
     end
 end, false)

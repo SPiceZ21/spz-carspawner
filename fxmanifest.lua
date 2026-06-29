@@ -21,6 +21,6 @@ files {
 }
 
 dependencies {
-    'spz-lib',
+    'ox_lib',
     'spz-vehicles'
 }
