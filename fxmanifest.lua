@@ -2,11 +2,13 @@ fx_version 'cerulean'
 game 'gta5'
 
 name 'spz-carspawner'
-description 'Standalone Car Spawner with NUI'
-version '1.0.10'
+description 'Standalone Car Spawner (ox_lib menu)'
+version '1.1.0'
 author 'SPiceZ-Core'
 
-ui_page 'ui/dist/index.html'
+shared_scripts {
+    '@ox_lib/init.lua'
+}
 
 client_scripts {
     'client/main.lua'
@@ -14,10 +16,6 @@ client_scripts {
 
 server_scripts {
     'server/main.lua'
-}
-
-files {
-    'ui/dist/**/*',
 }
 
 dependencies {
