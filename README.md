@@ -31,7 +31,7 @@ ui/
 Build: `cd ui && npm run build`
 
 ## Dependencies
-- spz-lib
+- ox_lib
 - spz-vehicles
 
 ## CI
