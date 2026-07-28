@@ -2,31 +2,19 @@
 
 RegisterKeyMapping("car", "Open Car Spawner", "keyboard", "F5")
 
+-- Race classes only — no civilian / service / utility / prop vehicles.
 local CLASS_NAMES = {
-    [0]  = "Compacts",
-    [1]  = "Sedans",
-    [2]  = "SUVs",
     [3]  = "Coupes",
     [4]  = "Muscle",
     [5]  = "Sports Classics",
     [6]  = "Sports",
     [7]  = "Super",
-    [8]  = "Motorcycles",
-    [9]  = "Off-Road",
-    [10] = "Industrial",
-    [11] = "Utility",
-    [12] = "Vans",
-    [13] = "Cycles",
-    [14] = "Boats",
-    [15] = "Helicopters",
-    [16] = "Planes",
-    [17] = "Service",
-    [18] = "Emergency",
-    [19] = "Military",
-    [20] = "Commercial",
-    [21] = "Trains",
     [22] = "Open Wheel",
 }
+
+-- Whitelist mirrors CLASS_NAMES: only these GTA vehicle classes are spawnable.
+local RACE_CLASSES = {}
+for classId in pairs(CLASS_NAMES) do RACE_CLASSES[classId] = true end
 
 local function FormatModelLabel(model)
     local hash = GetHashKey(model)
@@ -67,10 +55,11 @@ local function BuildVehicleList()
             seen[model] = true
             local hash = GetHashKey(model)
 
-            if IsModelInCdimage(hash) and IsModelAVehicle(hash) then
+            if IsModelInCdimage(hash) and IsModelAVehicle(hash)
+               and RACE_CLASSES[GetVehicleClassFromName(hash)] then
                 local classId = GetVehicleClassFromName(hash)
                 local regData = registered[model]
-                
+
                 local label
                 if regData and regData.label then
                     label = regData.label
