@@ -2,7 +2,7 @@
 
 RegisterKeyMapping("car", "Open Car Spawner", "keyboard", "F5")
 
--- Race classes only — no civilian / service / utility / prop vehicles.
+    -- Race classes only — no civilian / service / utility / prop vehicles.
 local CLASS_NAMES = {
     [3]  = "Coupes",
     [4]  = "Muscle",
@@ -187,14 +187,14 @@ local function OpenCarSpawnerMenu()
     -- Main Menu Options
     local mainOptions = {
         {
-            title       = "🔍 Search All Vehicles",
+            title       = "Search All Vehicles",
             description = "Search all " .. #vehicles .. " vanilla & custom mod vehicles",
             icon        = "magnifying-glass",
             arrow       = true,
             menu        = "carspawner_search_all",
         },
         {
-            title       = "✍️ Spawn by Model Name",
+            title       = "Spawn by Model Name",
             description = "Type exact vehicle model ID to spawn",
             icon        = "keyboard",
             onSelect    = function()
@@ -211,7 +211,7 @@ local function OpenCarSpawnerMenu()
 
     if #addonCars > 0 then
         table.insert(mainOptions, 2, {
-            title       = "⭐ Custom Mod Cars",
+            title       = "Custom Mod Cars",
             description = #addonCars .. " streaming addon vehicles",
             icon        = "star",
             arrow       = true,
