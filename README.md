@@ -1,38 +1,34 @@
-<div align="center">
-
-<img src="https://github.com/SPiceZ21/spz-core-media-kit/raw/main/Banner/Banner%232.png" alt="SPiceZ-Core Banner" width="100%"/>
-
-<br/>
-
 # spz-carspawner
-> Standalone Car Spawner with NUI · `v1.0.9`
 
-## Scripts
+> ox_lib vehicle spawn menu · `v1.1.0`
 
-| Side   | File              | Purpose                              |
-| ------ | ----------------- | ------------------------------------ |
-| Client | `client/main.lua` | Spawn request handling, NUI bridge   |
-| Server | `server/main.lua` | Vehicle spawn authority, validation  |
+## Overview
 
-## NUI
+`spz-carspawner` is a lightweight spawn menu built on `ox_lib`. Vehicles and classes come
+from the [spz-vehicles](../spz-vehicles/README.md) registry, and the server validates every
+spawn request.
 
-**Stack:** Vite · Preact · TypeScript · spz-ui
+Race classes only — Coupes, Muscle, Sports Classics, Sports, Super and Open Wheel.
+Civilian, service, utility and prop vehicles are not spawnable.
 
-```
-ui/
-├── src/
-│   ├── app.tsx
-│   ├── components/       # spz-ui components
-│   └── styles/
-└── dist/                 # built output (served by FiveM)
-    └── index.html
-```
+## Structure
 
-Build: `cd ui && npm run build`
+| Side | File | Purpose |
+|---|---|---|
+| Client | `client/main.lua` | Menu, spawn requests |
+| Server | `server/main.lua` | Spawn authority and validation |
+
+## Commands
+
+| Command | Effect |
+|---|---|
+| `/car [model]` | Spawn a vehicle, or open the menu with no argument |
+| `/dv` | Delete the vehicle you are in or near |
 
 ## Dependencies
-- ox_lib
-- spz-vehicles
 
-## CI
-Built and released via `.github/workflows/release.yml` on push to `main`.
+`ox_lib` · `spz-vehicles`
+
+---
+
+Part of [SPiceZ-Core](../README.md) · GPL-3.0
