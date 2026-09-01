@@ -1,5 +1,6 @@
 -- client/main.lua — Dynamic Car Spawner (ox_lib context menu)
 
+-- Registry: Docs/keybinds.md
 RegisterKeyMapping("car", "Open Car Spawner", "keyboard", "F5")
 
     -- Race classes only — no civilian / service / utility / prop vehicles.
