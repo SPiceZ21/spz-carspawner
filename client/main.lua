@@ -17,6 +17,29 @@ local CLASS_NAMES = {
 local RACE_CLASSES = {}
 for classId in pairs(CLASS_NAMES) do RACE_CLASSES[classId] = true end
 
+-- Add-on packs are wider than the base-game race set: a Gabz-style pack is
+-- mostly real-world sedans, hatches and SUVs, which GTA files under Sedans /
+-- Compacts / SUVs. Hiding those hid most of the pack. Still no bikes, boats,
+-- aircraft, service or utility vehicles.
+local ADDON_CLASS_NAMES = {
+    [0]  = "Compacts",
+    [1]  = "Sedans",
+    [2]  = "SUVs",
+    [9]  = "Off-road",
+    [12] = "Vans",
+}
+local ADDON_CLASSES = {}
+for classId in pairs(RACE_CLASSES) do ADDON_CLASSES[classId] = true end
+for classId in pairs(ADDON_CLASS_NAMES) do ADDON_CLASSES[classId] = true end
+
+--- model -> resource, published by spz-vehicles/server/addons.lua after it
+--- scans every running car pack. Authoritative where the label check below is
+--- only a guess (a well-packaged pack ships text labels, so it looks vanilla).
+local function discoveredAddons()
+    local set = GlobalState.spzAddonModels
+    return type(set) == "table" and set or {}
+end
+
 local function FormatModelLabel(model)
     local hash = GetHashKey(model)
     local makeGxt = GetMakeNameFromVehicleModel(hash)
@@ -49,35 +72,44 @@ local function BuildVehicleList()
 
     local list = {}
     local seen = {}
+    local addons = discoveredAddons()
 
-    for _, rawModel in ipairs(models) do
+    -- Discovered add-ons are walked too, in case this build's
+    -- GetAllVehicleModels misses a streamed model.
+    local candidates = {}
+    for _, rawModel in ipairs(models) do candidates[#candidates + 1] = rawModel end
+    for model in pairs(addons) do candidates[#candidates + 1] = model end
+
+    for _, rawModel in ipairs(candidates) do
         local model = rawModel:lower()
         if not seen[model] then
             seen[model] = true
             local hash = GetHashKey(model)
 
-            if IsModelInCdimage(hash) and IsModelAVehicle(hash)
-               and RACE_CLASSES[GetVehicleClassFromName(hash)] then
+            if IsModelInCdimage(hash) and IsModelAVehicle(hash) then
                 local classId = GetVehicleClassFromName(hash)
                 local regData = registered[model]
-
-                local label
-                if regData and regData.label then
-                    label = regData.label
-                else
-                    label = FormatModelLabel(model)
-                end
-
                 local nameGxt = GetDisplayNameFromVehicleModel(hash)
-                local isAddon = (not regData) and (GetLabelText(nameGxt) == "NULL")
 
-                table.insert(list, {
-                    model     = model,
-                    label     = label,
-                    classId   = classId,
-                    className = CLASS_NAMES[classId] or "Other",
-                    isAddon   = isAddon
-                })
+                local isAddon = addons[model] ~= nil
+                    or ((not regData) and (GetLabelText(nameGxt) == "NULL"))
+
+                if (isAddon and ADDON_CLASSES[classId]) or RACE_CLASSES[classId] then
+                    local label
+                    if regData and regData.label then
+                        label = regData.label
+                    else
+                        label = FormatModelLabel(model)
+                    end
+
+                    table.insert(list, {
+                        model     = model,
+                        label     = label,
+                        classId   = classId,
+                        className = CLASS_NAMES[classId] or ADDON_CLASS_NAMES[classId] or "Other",
+                        isAddon   = isAddon
+                    })
+                end
             end
         end
     end
