@@ -18,6 +18,7 @@ local function RaceBlocked(src)
 
     if state.inRace then return "You cannot do that during a race." end
     if state.inQueue then return "You cannot do that while queued for a race." end
+    if state.inPursuit then return "You cannot do that during Hot Pursuit." end
 
     if GetResourceState('spz-races') == 'started' then
         local ok, inTrial = pcall(function()
