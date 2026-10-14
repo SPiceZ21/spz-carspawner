@@ -18,6 +18,15 @@ server_scripts {
     'server/main.lua'
 }
 
+ui_page 'ui/index.html'
+
+files {
+    'ui/index.html',
+    'ui/style.css',
+    'ui/app.js',
+    'ui/img/*',
+}
+
 dependencies {
     'ox_lib',
     'spz-vehicles'

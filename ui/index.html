@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Car Spawner</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app" class="app hidden">
+    <aside class="side">
+      <header class="brand">
+        <div class="brand-mark"><i class="fa-solid fa-car-side"></i></div>
+        <div>
+          <div class="brand-t">GARAGE</div>
+          <div class="brand-s" id="total">-</div>
+        </div>
+      </header>
+      <nav id="cats" class="cats"></nav>
+      <form id="by-model" class="by-model" autocomplete="off">
+        <div class="h">Spawn by model</div>
+        <div class="by-row">
+          <input id="model-in" class="input" placeholder="e.g. sultan" spellcheck="false">
+          <button class="go" type="submit"><i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+      </form>
+      <footer class="side-foot"><kbd>ESC</kbd> close</footer>
+    </aside>
+
+    <main class="main">
+      <div class="top">
+        <div>
+          <div class="title" id="cat-title">All vehicles</div>
+          <div class="sub" id="cat-sub"></div>
+        </div>
+        <div class="search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input id="q" placeholder="Search name or model..." spellcheck="false">
+        </div>
+        <button id="x" class="x" title="Close"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div id="grid" class="grid"></div>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -118,164 +118,58 @@ local function BuildVehicleList()
     return list
 end
 
-local function OpenCarSpawnerMenu()
+-- ── NUI ───────────────────────────────────────────────────────────────────────
+
+local isOpen = false
+
+local function setOpen(v)
+    isOpen = v
+    SetNuiFocus(v, v)
+    if not v then SendNUIMessage({ action = "close" }) end
+end
+
+local function pushTheme()
+    local ok, theme = pcall(function() return exports["spz-core"]:GetTheme() end)
+    if ok and theme and next(theme) then SendNUIMessage({ action = "theme", theme = theme }) end
+end
+AddEventHandler("SPZ:themeUpdated", function(theme)
+    if theme and next(theme) then SendNUIMessage({ action = "theme", theme = theme }) end
+end)
+
+local function OpenCarSpawner()
+    if isOpen then return end
     local vehicles = BuildVehicleList()
     if #vehicles == 0 then
         lib.notify({ description = "No vehicles found on server", type = "error" })
         return
     end
 
-    local byClass = {}
-    local addonCars = {}
-    local allOptions = {}
+    local models = {}
+    for i, v in ipairs(vehicles) do models[i] = v.model end
+    local images = lib.callback.await("SPZ:carspawner:images", false, models) or {}
+    for _, v in ipairs(vehicles) do v.image = images[v.model] end
 
-    for _, v in ipairs(vehicles) do
-        -- Group by class name
-        local cName = v.className
-        byClass[cName] = byClass[cName] or {}
-        table.insert(byClass[cName], v)
-
-        -- Track addon/mod cars
-        if v.isAddon then
-            table.insert(addonCars, v)
-        end
-
-        -- Search All option list
-        table.insert(allOptions, {
-            title       = v.label,
-            description = "Model: " .. v.model .. (v.isAddon and " | Custom Mod" or (" | " .. v.className)),
-            icon        = (v.classId == 8 or v.classId == 13) and "motorcycle" or "car",
-            onSelect    = function()
-                TriggerServerEvent("SPZ:carspawner:spawnVehicle", v.model)
-            end,
-        })
-    end
-
-    -- Register "Search All Vehicles" sub-menu
-    lib.registerContext({
-        id      = "carspawner_search_all",
-        title   = "All Vehicles (" .. #vehicles .. ")",
-        menu    = "carspawner_main",
-        search  = true,
-        options = allOptions,
-    })
-
-    -- Register "Custom Mod Cars" sub-menu if any streamed mod cars exist
-    if #addonCars > 0 then
-        local addonOptions = {}
-        for _, v in ipairs(addonCars) do
-            table.insert(addonOptions, {
-                title       = v.label,
-                description = "Model: " .. v.model .. " | " .. v.className,
-                icon        = "car-side",
-                onSelect    = function()
-                    TriggerServerEvent("SPZ:carspawner:spawnVehicle", v.model)
-                end,
-            })
-        end
-
-        lib.registerContext({
-            id      = "carspawner_mod_cars",
-            title   = "Custom Mod Cars (" .. #addonCars .. ")",
-            menu    = "carspawner_main",
-            search  = true,
-            options = addonOptions,
-        })
-    end
-
-    -- Register a sub-menu for each class
-    local classMenus = {}
-    for cName, list in pairs(byClass) do
-        local options = {}
-        for _, v in ipairs(list) do
-            table.insert(options, {
-                title       = v.label,
-                description = "Model: " .. v.model .. (v.isAddon and " | Custom Mod" or ""),
-                icon        = (v.classId == 8 or v.classId == 13) and "motorcycle" or "car",
-                onSelect    = function()
-                    TriggerServerEvent("SPZ:carspawner:spawnVehicle", v.model)
-                end,
-            })
-        end
-
-        local menuId = "carspawner_class_" .. cName:gsub("%s+", "_"):lower()
-        lib.registerContext({
-            id      = menuId,
-            title   = cName .. " (" .. #list .. ")",
-            menu    = "carspawner_main",
-            search  = true,
-            options = options,
-        })
-
-        table.insert(classMenus, {
-            name    = cName,
-            id      = menuId,
-            count   = #list,
-            classId = list[1] and list[1].classId or 99
-        })
-    end
-
-    table.sort(classMenus, function(a, b) return a.classId < b.classId end)
-
-    -- Main Menu Options
-    local mainOptions = {
-        {
-            title       = "Search All Vehicles",
-            description = "Search all " .. #vehicles .. " vanilla & custom mod vehicles",
-            icon        = "magnifying-glass",
-            arrow       = true,
-            menu        = "carspawner_search_all",
-        },
-        {
-            title       = "Spawn by Model Name",
-            description = "Type exact vehicle model ID to spawn",
-            icon        = "keyboard",
-            onSelect    = function()
-                local input = lib.inputDialog("Spawn Vehicle", {
-                    { type = "input", label = "Model Name", placeholder = "e.g. sultan, zentorno, gtr", required = true }
-                })
-                if input and input[1] and input[1] ~= "" then
-                    local model = input[1]:lower():gsub("%s+", "")
-                    TriggerServerEvent("SPZ:carspawner:spawnVehicle", model)
-                end
-            end
-        }
-    }
-
-    if #addonCars > 0 then
-        table.insert(mainOptions, 2, {
-            title       = "Custom Mod Cars",
-            description = #addonCars .. " streaming addon vehicles",
-            icon        = "star",
-            arrow       = true,
-            menu        = "carspawner_mod_cars",
-        })
-    end
-
-    table.insert(mainOptions, {
-        title       = "────── Categories ──────",
-        disabled    = true
-    })
-
-    for _, cm in ipairs(classMenus) do
-        table.insert(mainOptions, {
-            title       = cm.name,
-            description = cm.count .. (cm.count == 1 and " vehicle" or " vehicles"),
-            icon        = "layer-group",
-            arrow       = true,
-            menu        = cm.id,
-        })
-    end
-
-    lib.registerContext({
-        id      = "carspawner_main",
-        title   = "🚗 Vehicle Spawner",
-        options = mainOptions,
-    })
-
-    lib.showContext("carspawner_main")
+    pushTheme()
+    SendNUIMessage({ action = "open", vehicles = vehicles })
+    setOpen(true)
 end
 
+RegisterNUICallback("close", function(_, cb) setOpen(false); cb(1) end)
+
+RegisterNUICallback("spawn", function(data, cb)
+    cb(1)
+    local model = type(data) == "table" and tostring(data.model or ""):lower():gsub("%s+", "") or ""
+    if model == "" then return end
+    setOpen(false)
+    TriggerServerEvent("SPZ:carspawner:spawnVehicle", model)
+end)
+
+RegisterNUICallback("uiReady", function(_, cb) cb(1); pushTheme() end)
+
 RegisterNetEvent("SPZ:carspawner:openMenu", function()
-    OpenCarSpawnerMenu()
+    OpenCarSpawner()
+end)
+
+AddEventHandler("onResourceStop", function(res)
+    if res == GetCurrentResourceName() and isOpen then SetNuiFocus(false, false) end
 end)
