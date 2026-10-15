@@ -144,13 +144,17 @@ local function OpenCarSpawner()
         return
     end
 
-    local models = {}
-    for i, v in ipairs(vehicles) do models[i] = v.model end
-    local images = lib.callback.await("SPZ:carspawner:images", false, models) or {}
-    for _, v in ipairs(vehicles) do v.image = images[v.model] end
+    -- Images are matched in the page by model name: ui/img/<model>.png first,
+    -- then the uz_AutoShot capture, then a placeholder.
+    local shots = nil
+    if GetResourceState("uz_AutoShot") == "started" then
+        local ok, base = pcall(function() return exports["uz_AutoShot"]:getShotsBaseURL() end)
+        local okF, fmt = pcall(function() return exports["uz_AutoShot"]:getPhotoFormat() end)
+        if ok and base then shots = { base = base .. "/vehicles", fmt = okF and fmt or "png" } end
+    end
 
     pushTheme()
-    SendNUIMessage({ action = "open", vehicles = vehicles })
+    SendNUIMessage({ action = "open", vehicles = vehicles, shots = shots })
     setOpen(true)
 end
 
