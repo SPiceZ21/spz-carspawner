@@ -34,7 +34,6 @@ local function Deny(src, reason)
     TriggerClientEvent('ox_lib:notify', src, {
         description = reason,
         type        = "error",
-        position    = "center-left",
     })
 end
 
@@ -50,7 +49,7 @@ RegisterNetEvent("SPZ:carspawner:spawnVehicle", function(model)
     if exports["spz-vehicles"]:IsRegistered(modelLower) then
         exports["spz-vehicles"]:SpawnVehicle(src, modelLower, "freeroam")
     else
-        TriggerClientEvent('ox_lib:notify', src, { description = "Invalid model: " .. tostring(model), type = "error", position = "center-left" })
+        TriggerClientEvent('ox_lib:notify', src, { description = "Invalid model: " .. tostring(model), type = "error" })
     end
 end)
 
@@ -68,7 +67,7 @@ RegisterCommand("car", function(source, args)
         if exports["spz-vehicles"]:IsRegistered(model) then
             exports["spz-vehicles"]:SpawnVehicle(source, model, "freeroam")
         else
-            TriggerClientEvent('ox_lib:notify', source, { description = "Invalid model: " .. model, type = "error", position = "center-left" })
+            TriggerClientEvent('ox_lib:notify', source, { description = "Invalid model: " .. model, type = "error" })
         end
     end
 end, false)
