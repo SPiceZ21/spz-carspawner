@@ -160,6 +160,10 @@ end
 
 RegisterNUICallback("close", function(_, cb) setOpen(false); cb(1) end)
 
+-- spz-tutorial closes whatever it opened when the tour moves on.
+AddEventHandler("spz-tutorial:closeUI", function() if isOpen then setOpen(false) end end)
+
+
 RegisterNUICallback("spawn", function(data, cb)
     cb(1)
     local model = type(data) == "table" and tostring(data.model or ""):lower():gsub("%s+", "") or ""
