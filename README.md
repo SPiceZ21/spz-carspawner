@@ -1,34 +1,52 @@
 # spz-carspawner
 
-> ox_lib vehicle spawn menu · `v1.1.0`
+> Freeroam car spawner.
+
+![version](https://img.shields.io/badge/version-1.5.0-ff6200) ![SPiceZ-Core](https://img.shields.io/badge/SPiceZ--Core-beta-18181b)
 
 ## Overview
 
-`spz-carspawner` is a lightweight spawn menu built on `ox_lib`. Vehicles and classes come
-from the [spz-vehicles](../spz-vehicles/README.md) registry, and the server validates every
-spawn request.
+Opens a searchable garage (`F5`) with every car, filtered by class, including add-ons. Freeroam only.
 
-Race classes only — Coupes, Muscle, Sports Classics, Sports, Super and Open Wheel.
-Civilian, service, utility and prop vehicles are not spawnable.
+## Features
 
-## Structure
+- Search and class filter
+- Add-on cars included
+- `/car <model>` to spawn directly
 
-| Side | File | Purpose |
-|---|---|---|
-| Client | `client/main.lua` | Menu, spawn requests |
-| Server | `server/main.lua` | Spawn authority and validation |
+## Requirements
+
+| Resource | Type |
+|---|---|
+| `ox_lib` | third-party |
+| `spz-vehicles` | SPiceZ module |
+
+## Installation
+
+Included in the [txAdmin recipe](https://github.com/SPiceZ21/spz-txrecipe). Manual install:
+
+1. Download `spz-carspawner` from GitHub (latest release, or the repository) into your `resources` folder.
+2. Add to `server.cfg`, after its requirements:
+
+```cfg
+ensure spz-carspawner
+```
 
 ## Commands
 
-| Command | Effect |
+| Command | Who | Description |
+|---|---|---|
+| `/car` | player | Open the spawner, or `/car <model>` |
+| `/dv` | player | Delete your vehicle |
+
+## Key binds
+
+Rebindable in **Settings → Key Bindings → FiveM**.
+
+| Action | Default |
 |---|---|
-| `/car [model]` | Spawn a vehicle, or open the menu with no argument |
-| `/dv` | Delete the vehicle you are in or near |
-
-## Dependencies
-
-`ox_lib` · `spz-vehicles`
+| Open Car Spawner | `F5` |
 
 ---
 
-Part of [SPiceZ-Core](../README.md) · GPL-3.0
+Part of **SPiceZ-Core** — [documentation](https://github.com/SPiceZ21/Docs) · [all modules](https://github.com/SPiceZ21/Docs/blob/main/modules/README.md)
