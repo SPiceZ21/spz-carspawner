@@ -11,6 +11,7 @@ shared_scripts {
 }
 
 client_scripts {
+    '@spz-hud/shim.lua',   -- NUI goes through spz-hud
     'client/main.lua'
 }
 
@@ -18,7 +19,7 @@ server_scripts {
     'server/main.lua'
 }
 
-ui_page 'ui/index.html'
+-- ui_page 'ui/index.html'  -- drawn by spz-hud now (web/public/apps/spz-carspawner); uncomment + drop the shim to roll back
 
 files {
     'ui/index.html',
@@ -28,6 +29,7 @@ files {
 }
 
 dependencies {
+    'spz-hud',
     'ox_lib',
     'spz-vehicles'
 }
