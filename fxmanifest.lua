@@ -3,7 +3,7 @@ game 'gta5'
 
 name 'spz-carspawner'
 description 'Standalone Car Spawner (ox_lib menu)'
-version '1.5.2'
+version '1.5.3'
 author 'SPiceZ-Core'
 
 shared_scripts {
